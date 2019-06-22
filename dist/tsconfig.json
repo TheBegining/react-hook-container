@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "outDir": "./",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -11,9 +12,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "emitDeclarationOnly": true,
     "jsx": "preserve"
   },
-  "include": ["src"]
+  "files": ["../src/lib/react-hook-container.tsx"]
 }

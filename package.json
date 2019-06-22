@@ -1,7 +1,10 @@
 {
-  "name": "react-container",
+  "name": "react-hook-container",
   "version": "0.1.0",
-  "private": true,
+  "description": "make React.useContext easier to use",
+  "private": false,
+  "main": "dist/react-hook-container.js",
+  "types": "dist/react-hook-container.d.ts",
   "dependencies": {
     "@types/jest": "24.0.15",
     "@types/node": "12.0.10",
@@ -14,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc -p dist && babel src/lib/react-hook-container.tsx --out-dir dist --extensions \".ts,.tsx\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -32,5 +35,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3"
   }
 }
