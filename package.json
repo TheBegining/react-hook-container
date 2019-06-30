@@ -1,6 +1,6 @@
 {
   "name": "react-hook-container",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "make React.useContext easier to use",
   "private": false,
   "main": "dist/react-hook-container.js",

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 
 interface IProps<State> {
-  initialState: State;
+  initialState?: State;
 }
 
 interface IContainer<State, Value> {
@@ -9,8 +9,16 @@ interface IContainer<State, Value> {
   Context: React.Context<Value | null>;
 }
 
-export function createContainer<State, Value>(
+export function createContainer<Value, State = never>(
   useHook: (initialState: State) => Value
+): IContainer<State, Value>;
+
+export function createContainer<Value>(
+  useHook: () => Value
+): IContainer<never, Value>;
+
+export function createContainer<Value, State>(
+  useHook: any
 ): IContainer<State, Value> {
   const Context = createContext<Value | null>(null);
 
