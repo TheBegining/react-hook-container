@@ -4,22 +4,22 @@ interface IProps<State> {
   initialState?: State;
 }
 
-interface IContainer<State, Value> {
+interface IContainer<Value, State> {
   Provider: (props: React.PropsWithChildren<IProps<State>>) => JSX.Element;
   Context: React.Context<Value | null>;
 }
 
 export function createContainer<Value, State = never>(
   useHook: (initialState: State) => Value
-): IContainer<State, Value>;
+): IContainer<Value, State>;
 
 export function createContainer<Value>(
   useHook: () => Value
-): IContainer<never, Value>;
+): IContainer<Value, never>;
 
 export function createContainer<Value, State>(
   useHook: any
-): IContainer<State, Value> {
+): IContainer<Value, State> {
   const Context = createContext<Value | null>(null);
 
   const Provider = (props: React.PropsWithChildren<IProps<State>>) => {
@@ -29,8 +29,8 @@ export function createContainer<Value, State>(
   return { Provider, Context };
 }
 
-export function useContainer<State, Value>(
-  container: IContainer<State, Value>
+export function useContainer<Value, State>(
+  container: IContainer<Value, State>
 ): Value {
   const value = useContext(container.Context);
   if (value === null) {
