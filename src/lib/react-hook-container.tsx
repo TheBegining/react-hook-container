@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, memo } from "react";
 
 interface IProps<State> {
   initialState?: State;
@@ -37,4 +37,16 @@ export function useContainer<Value, State>(
     throw new Error("Component must be wrapped with <Container.Provider>");
   }
   return value;
+}
+
+export function connect<TOwnProps>(useFunc: () => TOwnProps) {
+  function connectHOC<TProps>(Component: (props: TProps) => JSX.Element) {
+    const MemoComponent = memo(Component) as any;
+    type TStateProps = Omit<TProps, keyof TOwnProps>;
+    return (props: TStateProps) => {
+      const containerProps = useFunc();
+      return <MemoComponent {...props} {...containerProps} />;
+    };
+  }
+  return connectHOC;
 }

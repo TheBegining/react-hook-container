@@ -1,50 +1,79 @@
 import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { createContainer, useContainer } from "./lib/react-hook-container";
+import {
+  createContainer,
+  useContainer,
+  connect
+} from "./lib/react-hook-container";
 
-const useTest = (initState: number) => {
-  const [a, setA] = useState(initState);
-  const [b, setB] = useState<number>(2);
+const useTest = () => {
+  const [a, setA] = useState(6);
+  const [b, setB] = useState(2);
 
   return { a, setA, b, setB };
 };
 
 const TestContainer = createContainer(useTest);
 
+interface IProps {
+  name: string;
+}
+
+interface IData {
+  data: any;
+  setData: any;
+}
+
+const useA = () => {
+  const { a, setA } = useContainer(TestContainer);
+  return { data: a, setData: setA };
+};
+
+const useB = () => {
+  const { b, setB } = useContainer(TestContainer);
+  return { data: b, setData: setB };
+};
+
+type IOwnProps = {
+  data: any;
+  setData: any;
+};
+
+const Show = ({ data, setData, name }: IOwnProps & IProps) => {
+  const handleClick = () => {
+    setData(Math.random());
+  };
+  console.log("show");
+  return (
+    <div>
+      <div>data:{data}</div>
+      <button onClick={handleClick}>{name}</button>
+    </div>
+  );
+};
+
+const ShowA = connect(useA)(Show);
+
+const ShowB = connect(useB)(Show);
+
 const TestA = () => {
-  const test = useContainer(TestContainer);
-  console.log("TestA", test);
-  return <div>TestA:{test.a}</div>;
+  console.log("TestA");
+  return <ShowA name={"testA"} />;
 };
 
 const TestB = () => {
-  const test = useContainer(TestContainer);
-  console.log("TestB", test);
-  return <div>TestB:{test.b}</div>;
+  console.log("TestB");
+  return <ShowB name={"testB"} />;
 };
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <TestContainer.Provider initialState={5}>
+      <TestContainer.Provider>
         <TestA />
         <TestB />
+        {/* <TestC /> */}
       </TestContainer.Provider>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 };
