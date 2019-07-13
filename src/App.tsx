@@ -3,47 +3,34 @@ import logo from "./logo.svg";
 import "./App.css";
 import { createContainer, useContainer } from "./lib/react-hook-container";
 
-const useA = (initState: number) => {
+const useTest = (initState: number) => {
   const [a, setA] = useState(initState);
-  return { a, setA };
-};
-
-const useB = () => {
   const [b, setB] = useState<number>(2);
-  return { b, setB };
+
+  return { a, setA, b, setB };
 };
 
-function A() {}
-
-A();
-
-const AContainer = createContainer(useA);
-
-const BContainer = createContainer(useB);
+const TestContainer = createContainer(useTest);
 
 const TestA = () => {
-  const test = useContainer(AContainer);
+  const test = useContainer(TestContainer);
   console.log("TestA", test);
-  return <div>TestA</div>;
+  return <div>TestA:{test.a}</div>;
 };
 
 const TestB = () => {
-  const test = useContainer(BContainer);
+  const test = useContainer(TestContainer);
   console.log("TestB", test);
-  return <div>TestB</div>;
+  return <div>TestB:{test.b}</div>;
 };
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <AContainer.Provider>
-        <div>
-          <TestA />
-        </div>
-      </AContainer.Provider>
-      <BContainer.Provider>
+      <TestContainer.Provider initialState={5}>
+        <TestA />
         <TestB />
-      </BContainer.Provider>
+      </TestContainer.Provider>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
