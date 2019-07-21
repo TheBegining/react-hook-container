@@ -39,14 +39,16 @@ export function useContainer<Value, State>(
   return value;
 }
 
-export function connect<TOwnProps>(useFunc: () => TOwnProps) {
-  function connectHOC<TProps>(Component: (props: TProps) => JSX.Element) {
+export const connect = <TContextProps extends {}>(
+  useContext: <T>(OwnProps: T) => TContextProps
+) => {
+  return <TOwnProps extends {}>(
+    Component: (props: TContextProps & TOwnProps) => JSX.Element | null
+  ) => {
     const MemoComponent = memo(Component) as any;
-    type TStateProps = Omit<TProps, keyof TOwnProps>;
-    return (props: TStateProps) => {
-      const containerProps = useFunc();
-      return <MemoComponent {...props} {...containerProps} />;
+    return (props: TOwnProps) => {
+      const ContextProps = useContext(props);
+      return <MemoComponent {...props} {...ContextProps} />;
     };
-  }
-  return connectHOC;
-}
+  };
+};
